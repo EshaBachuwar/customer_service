@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card } from '../common/Card';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
@@ -16,7 +16,8 @@ interface ChatBotProps {
 
 export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
 
-  console.log(initialData)
+
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   
   const [messages,setMessages]=useState<Message[]>([{
     text:initialData?.text ,
@@ -26,19 +27,11 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
   console.log(messages[0]);
   
   
-  // useEffect(()=>{
-  //   const fetchInitData=async()=>{
-  //     let init_data=await fetch('http://127.0.0.1:5000/');
-  //     let data=await init_data.json()
-  //     setMessages([{
-  //       text:data.message,
-  //       isBot:true,
-  //       timestamp:new Date()
-  //     }])
-  //   }
-  //   fetchInitData();    
-  // },[])
-  
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleSendMessage = async (message: string) => {
     try {
@@ -61,11 +54,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
           user_id:'123',
         }),
       });
-      console.log("jcfjefe")
       
       const response=await res.json();
-      console.log(response);
-      console.log(response.answer);
       const botMessage: Message = {
         text: response.answer,
         isBot: true,
@@ -86,7 +76,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
   return (
     <Card title="Chat Bot" className="h-full">
       <div className="h-[calc(100vh-200px)] flex flex-col">
-        <div className="flex-1 overflow-y-auto p-4">
+        <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
           {messages.map((msg, idx) => (
             <ChatMessage
               key={idx}
