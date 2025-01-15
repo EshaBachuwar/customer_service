@@ -1,6 +1,6 @@
 interface ChatMessageProps {
-    message: string;
-    isBot: boolean;
+    message: string | undefined;
+    isBot: boolean | undefined;
   }
   
   export const ChatMessage: React.FC<ChatMessageProps> = ({ message, isBot }) => {

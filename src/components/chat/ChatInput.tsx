@@ -4,6 +4,7 @@ import { Button } from '../common/Button';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
+  disabled?: boolean;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
@@ -24,8 +25,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your query..."
         className="flex-1"
+        
       />
-      <Button type="submit" variant="primary">
+      <Button type="submit" variant="primary" >
         Send
       </Button>
     </form>

@@ -5,6 +5,7 @@ import { StatsCard } from '@/components/dashboard/StatsCard';
 import { TicketList } from '@/components/dashboard/TicketList';
 import { ChatBot } from '@/components/chat/ChatBot';
 import { ProfileSection } from '@/components/dashboard/ProfileSection';
+import { useInitialChat } from '@/hooks/initialChat';
 
 const MOCK_TICKETS = [
   {
@@ -34,8 +35,11 @@ const MOCK_TICKETS = [
 ];
 
 export default function Home() {
-  const [tickets] = useState(MOCK_TICKETS);
 
+  const [tickets] = useState(MOCK_TICKETS);
+  const { isLoading, error, initialData } = useInitialChat();
+  console.log(initialData);
+  
   // Calculate statistics
   const stats = {
     issuedTickets: tickets.length,
@@ -54,14 +58,14 @@ export default function Home() {
           />
         </div>
 
-        <div className="md:col-span-6">
+        <div className="md:col-span-5">
           <div className="bg-white rounded-lg shadow-sm">
             <TicketList tickets={tickets} />
           </div>
         </div>
 
-        <div className="md:col-span-3">
-          <ChatBot />
+        <div className="md:col-span-4">
+        {initialData && <ChatBot initialData={initialData} />}
         </div>
       </div>
     </div>
