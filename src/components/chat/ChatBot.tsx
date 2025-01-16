@@ -3,11 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Card } from '../common/Card';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Message{
   text:string | undefined;
   isBot:boolean | undefined;
   timestamp:Date | undefined;
+  project_id_request:boolean | undefined;
 }
 
 interface ChatBotProps {
@@ -18,15 +20,25 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
 
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [chatWindowId, setChatWindowId] = useState<string>('');
   
   const [messages,setMessages]=useState<Message[]>([{
     text:initialData?.text ,
     isBot:initialData?.isBot ,
     timestamp:initialData?.timestamp,
+    project_id_request:false,
   }]);
   console.log(messages[0]);
   
-  
+  useEffect(() => {
+    let storedChatWindowId = localStorage.getItem('chat_window_id');
+    if (!storedChatWindowId) {
+      storedChatWindowId = uuidv4();
+      localStorage.setItem('chat_window_id', storedChatWindowId);
+    }
+    
+    setChatWindowId(storedChatWindowId);
+  }, []); 
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTo({
@@ -41,9 +53,10 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
       const userMessage: Message = {
         text: message,
         isBot: false,
-        timestamp: new Date()
+        timestamp: new Date(),
+        project_id_request:( messages.length>0?messages[messages.length-1].project_id_request:false),
       };
-      
+      console.log((messages.length>0?messages[messages.length-1].project_id_request:false))
       setMessages(prev => [...prev, userMessage]);
 
       const res = await fetch('http://127.0.0.1:5000/api/sap-question',{
@@ -53,17 +66,24 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
         },
         body: JSON.stringify({
           question:message,
-          chat_window_id:'123',
+          chat_window_id:chatWindowId,
           user_id:'123',
+          project_id_request:( messages.length>0?messages[messages.length-1].project_id_request:false),
         }),
       });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       
       const response=await res.json();
       const botMessage: Message = {
         text: response.answer,
         isBot: true,
-        timestamp: new Date()
+        timestamp: new Date(),
+        project_id_request:response.project_id_request,
       };
+
+      console.log(response)
       
       setMessages(prev => [...prev, botMessage]);
     } catch (err) {
@@ -71,7 +91,8 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
       setMessages(prev => [...prev, {
         text: 'Sorry, I encountered an error. Please try again.',
         isBot: true,
-        timestamp: new Date()
+        timestamp: new Date(),
+        project_id_request:(prev.length>0?prev[prev.length-1].project_id_request:false),
       }]);
     }
   };
