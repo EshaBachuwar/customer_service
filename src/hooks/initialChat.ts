@@ -33,3 +33,21 @@ export const useInitialChat = () => {
 
   return { isLoading, error, initialData };
 };
+
+export const getTickets=()=>{
+  const [tickets, setTickets] = useState([]);
+  useEffect(() => {
+    const fetchTickets = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/tickets');
+        const data = await response.json();
+        setTickets(data);
+      } catch (error) {
+        console.error('Error fetching tickets:', error);
+      }
+    };
+
+    fetchTickets();
+  }, []);
+  return tickets
+}

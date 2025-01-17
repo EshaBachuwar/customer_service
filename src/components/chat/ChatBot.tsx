@@ -4,7 +4,11 @@ import { Card } from '../common/Card';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import { v4 as uuidv4 } from 'uuid';
+import Image from 'next/image';
 
+export function Agent() {
+  return <Image src={`/assets/agent.png`} alt="agent" width="64" height="64" />
+}
 interface Message{
   text:string | undefined;
   isBot:boolean | undefined;
@@ -98,7 +102,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
   };
 
   return (
-    <Card title="Chat Bot" className="h-full">
+    <Card title="Customer Serivice Agent" className="h-full">
       <div className="h-[calc(100vh-200px)] flex flex-col">
         <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
           {messages.map((msg, idx) => (
