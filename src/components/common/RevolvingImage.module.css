@@ -13,8 +13,10 @@
   
   .movingImage {
     position: absolute;
-    opacity: 0.4;
+    opacity: 0.2;
     animation: moveAcross 16s linear infinite;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   }
   
   @keyframes moveAcross {
@@ -24,7 +26,7 @@
     }
     25% {
       top: 10%;
-      left: 90%;
+      left: 95%;
     }
     50% {
       top: 90%;
@@ -32,7 +34,7 @@
     }
     75% {
       top: 90%;
-      left: 90%;
+      left: 95%;
     }
     100% {
       top: 10%;

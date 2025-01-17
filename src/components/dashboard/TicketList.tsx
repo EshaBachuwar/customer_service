@@ -14,6 +14,7 @@ export const TicketList: React.FC<TicketListProps> = ({ tickets }) => {
 
   const tabs = [
     { id: 'open', label: 'Open' },
+    { id: 'inProgress', label: 'In-Progress' },
     { id: 'closed', label: 'Closed' },
   ];
 
