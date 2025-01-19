@@ -102,7 +102,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
   };
 
   return (
-    <Card title="Customer Serivice Agent" className="h-full">
+    <Card title="Customer Service Agent" className="h-full">
       <div className="h-[calc(100vh-200px)] flex flex-col">
         <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
           {messages.map((msg, idx) => (
@@ -113,7 +113,7 @@ export const ChatBot: React.FC<ChatBotProps> = ({initialData}) => {
             />
           ))}
         </div>
-        <div className="border-t p-4">
+        <div className="border-t p-4 w-full">
           <ChatInput onSend={handleSendMessage} />
         </div>
       </div>

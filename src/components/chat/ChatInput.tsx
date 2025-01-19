@@ -24,10 +24,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         placeholder="Type your query..."
-        className="flex-1"
-        
+        className="flex-1 w-[62vw]"
       />
-      <Button type="submit" variant="primary" >
+      <Button type="submit" variant="primary">
         Send
       </Button>
     </form>

@@ -8,7 +8,7 @@ interface StatsCardProps {
 export const StatsCard: React.FC<StatsCardProps> = ({ issuedTickets, solvedTickets }) => {
   return (
     <Card title="Ticket Statistics">
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 ml-12">
         <div>
           <p className="text-sm text-gray-500">Issued</p>
           <p className="text-2xl font-bold">{issuedTickets}</p>
